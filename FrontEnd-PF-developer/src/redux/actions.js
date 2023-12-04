@@ -18,7 +18,7 @@ import {
   RESET
 } from "./action-type";
 
-const URL = 'https://autenticacion-prueba-ryqg-754xpv16t-nicolas-s-projects-9dbaafa4.vercel.app/';
+const URL = 'https://autenticacion-prueba-nicolas-s-projects-9dbaafa4.vercel.app';
 
 
 export const showLoader = () => {
