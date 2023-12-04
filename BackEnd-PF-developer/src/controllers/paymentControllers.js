@@ -28,8 +28,8 @@ const createOrder = async (req, res) => {
       landing_page: "LOGIN",
       user_action: "PAY_NOW",
       shipping_preference: "NO_SHIPPING",
-      return_url: "http://localhost:3001/payment/capture-order",
-      cancel_url: "http://localhost:3001/payment/cancel-order",
+      return_url: "https://autenticacion-prueba-ryqg-754xpv16t-nicolas-s-projects-9dbaafa4.vercel.app/payment/capture-order",
+      cancel_url: "https://autenticacion-prueba-ryqg-754xpv16t-nicolas-s-projects-9dbaafa4.vercel.app/payment/cancel-order",
     },
   };
 
