@@ -239,65 +239,74 @@ export const deleteFavorite = (datos) => async () => {
   }
 };
 
-export const getApiJWT = (token) => {
-  return new Promise((resolve, reject) => {
-    try {
-      let options = {
-        method: "GET",
-        url: "/auth",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
 
-      axios.request(options).then((res) => {
-        resolve(res.data);
-      });
-    } catch (err) {
-      console.log(">> ERROR");
-      reject(err);
-    }
-  });
-};
+/* --------------------------------------------
+  file: redux -actions
+ 
+  description:  Auth0 Management
+-----------------------------------------------*/
 
-export const getUsers = (apiToken) => {
-  return new Promise((resolve, reject) => {
-    let options = {
-      method: "GET",
-      url: `/users`,
-      headers: {
-        authorization: `Bearer ${apiToken}`,
-      },
-    };
 
-    axios
-      .request(options)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
 
-export const getUser = (userId, apiToken) => {
-  return new Promise((resolve, reject) => {
-    let options = {
-      method: "GET",
-      url: `/users/${userId}`,
-      headers: {
-        authorization: `Bearer ${apiToken}`,
-      },
-    };
+// export const getApiJWT = (token) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       let options = {
+//         method: "GET",
+//         url: "/auth",
+//         headers: {
+//           authorization: `Bearer ${token}`,
+//         },
+//       };
 
-    axios
-      .request(options)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+//       axios.request(options).then((res) => {
+//         resolve(res.data);
+//       });
+//     } catch (err) {
+//       console.log(">> ERROR");
+//       reject(err);
+//     }
+//   });
+// };
+
+// export const getUsers = (apiToken) => {
+//   return new Promise((resolve, reject) => {
+//     let options = {
+//       method: "GET",
+//       url: `/users`,
+//       headers: {
+//         authorization: `Bearer ${apiToken}`,
+//       },
+//     };
+
+//     axios
+//       .request(options)
+//       .then((response) => {
+//         resolve(response);
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// };
+
+// export const getUser = (userId, apiToken) => {
+//   return new Promise((resolve, reject) => {
+//     let options = {
+//       method: "GET",
+//       url: `/users/${userId}`,
+//       headers: {
+//         authorization: `Bearer ${apiToken}`,
+//       },
+//     };
+
+//     axios
+//       .request(options)
+//       .then((response) => {
+//         resolve(response);
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// };
