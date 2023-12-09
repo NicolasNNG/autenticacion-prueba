@@ -14,8 +14,14 @@ import {
   UPDATE_CART,
   REMOVE_FROM_CART,
   SORT_PRICE,
-  GET_FAVORITES,
-  RESET
+  RESET,
+  ADD_FAVORITES,
+  GET_ALL_FAVS,
+  REMOVE_FAV_BACK,
+  NEW_FAVORITE,
+  REMOVE_FAVORITES
+
+
 } from "./action-type";
 
 const URL = 'https://autenticacion-prueba-nicolas-s-projects-9dbaafa4.vercel.app';
@@ -219,25 +225,7 @@ export const eliminarDelCarrito = (userId, productId) => async (dispatch) => {
   }
 };
 
-export const getFavorites = (id) => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/favoritos/${id}`);
-    dispatch({
-      type: GET_FAVORITES,
-      payload: data.data,
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
 
-export const deleteFavorite = (datos) => async () => {
-  try {
-    const { data } = await axios.post("/favoritos/delete", datos);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 
 /* --------------------------------------------
@@ -310,3 +298,68 @@ export const getUser = (userId, apiToken) => {
       });
   });
 };
+
+/* --------------------------------------------
+  file: redux -actions
+ 
+  description:  Favorites
+-----------------------------------------------*/
+export function getAllFavs(id) {
+  console.log('me despacharon');
+
+  return async function (dispatch) {
+    const response = await axios.get(`${URL}/favs/${id}`);
+    dispatch({
+      type: GET_ALL_FAVS,
+      payload: response.data,
+    });
+  };
+}
+
+
+export function AddFavoriteBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.post(`${URL}/favs`, objectId);
+    dispatch({
+      type: NEW_FAVORITE,
+      payload: response.data,
+    });
+  };
+}
+
+export function removeFav(id) {
+  return {
+    type: REMOVE_FAVORITES,
+    payload: id,
+  };
+}
+
+
+
+export function removeFavoriteBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.put(`${URL}/favs`, objectId);
+    dispatch({
+      type: REMOVE_FAV_BACK,
+      payload: response.data,
+    });
+  };
+}
+
+
+
+
+export function getAddFavorites(product) {
+  return async (dispatch) => {
+    try {
+      // const { data } = await axios.get(`${URL}/favorites`);
+      return dispatch({
+        type: ADD_FAVORITES,
+        payload: product,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+

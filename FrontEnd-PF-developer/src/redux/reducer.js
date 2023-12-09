@@ -10,8 +10,15 @@ import {
   UPDATE_CART,
   REMOVE_FROM_CART,
   SORT_PRICE,
-  GET_FAVORITES,
   RESET,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_ALL_FAVS,
+  NEW_FAVORITE,
+  REMOVE_FAV_BACK,
+
+
+  FAVORITES,
 } from "./action-type";
 
 const initialState = {
@@ -23,6 +30,8 @@ const initialState = {
   user: {},
   carrito: [],
   favorites: [],
+  FavoritesPersist: [],
+  allFavoritesBack: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -38,24 +47,24 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         indexProductShow: action.payload,
       };
-    
-    case GET_BY_ID: 
-    return {
-      ...state,
-      productDetail: action.payload
-    };
+
+    case GET_BY_ID:
+      return {
+        ...state,
+        productDetail: action.payload,
+      };
 
     case CLEAR_DETAIL:
       return {
         ...state,
-        productDetail: []
-      }
+        productDetail: [],
+      };
 
     case GET_PRODUCTS_BY_NAME:
       return {
         ...state,
-        productShow: action.payload
-      }
+        productShow: action.payload,
+      };
     case GET_ALL_CATEGORIES:
       return {
         ...state,
@@ -87,15 +96,50 @@ const rootReducer = (state = initialState, action) => {
         carrito: action.payload.data,
         productId: action.payload.id_producto,
       };
-
-    case GET_FAVORITES:
+    case GET_ALL_FAVS:
       return {
         ...state,
-        favorites: action.payload,
+        allFavoritesBack: action.payload,
+      };
+
+    case NEW_FAVORITE:
+      return {
+        ...state,
+        allFavoritesBack: action.payload,
+      };
+
+    case REMOVE_FAV_BACK:
+      return {
+        ...state,
+        allFavoritesBack: action.payload,
+      };
+
+    case ADD_FAVORITES:
+      return {
+        ...state,
+        FavoritesPersist: [...state.FavoritesPersist, action.payload],
+      };
+
+    case REMOVE_FAVORITES:
+      // eslint-disable-next-line no-case-declarations
+      let productRemove = state.FavoritesPersist.filter(
+        (product) => product.id !== action.payload
+      );
+      return {
+        ...state,
+        FavoritesPersist: productRemove,
       };
     default:
-      return {...state};
+      return { ...state };
+
+      case FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+      
   }
+  
 };
 
 export default rootReducer;

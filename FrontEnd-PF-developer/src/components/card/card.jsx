@@ -1,9 +1,6 @@
 import Link from "next/link";
 import style from "../card/card.module.css"
 
-import { useState,useEffect } from "react";
-import { useDispatch,useSelector } from "react-redux";
-
 const Card = ({id, name, brandName, description , price, color, image}) => {
     return (
     <div className={style.container}>     
