@@ -3,7 +3,7 @@ import store from "./store";
 import { Provider } from "react-redux";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://autenticacion-prueba-nicolas-s-projects-9dbaafa4.vercel.app";
+axios.defaults.baseURL = "http://localhost:3001";
 
 export function Providers({ children }) {
   return <Provider store={store}>{children}</Provider>;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useLocalStorage } from "@/helpers/localStorage/useLocalStorage";
 
 import {
   SHOW_LOADER,
@@ -14,18 +15,85 @@ import {
   UPDATE_CART,
   REMOVE_FROM_CART,
   SORT_PRICE,
+  GET_FAVORITES,
   RESET,
-  ADD_FAVORITES,
+  GET_USER_PRODUCTS,
+  CREATE_SHOES,
+  USER_LOGEADO,
+  CLEAR_USER,
+  CHANGE_SHOE,
+  DELETE_SHOE,
+  GET_ALL_CARTS,
   GET_ALL_FAVS,
-  REMOVE_FAV_BACK,
+  NEW_CART,
   NEW_FAVORITE,
-  REMOVE_FAVORITES
-
-
+  REMOVE_CART_BACK,
+  REMOVE_FAV_BACK
 } from "./action-type";
 
-const URL = 'https://autenticacion-prueba-nicolas-s-projects-9dbaafa4.vercel.app';
+const URL = 'http://localhost:3001';
 
+export function getAllFavs(id) {
+  console.log('me despacharon');
+  
+  return async function (dispatch) {
+    const response = await axios.get(`${URL}/favs/${id}`);
+    dispatch({
+      type: GET_ALL_FAVS,
+      payload: response.data,
+    });
+  };
+}
+
+export function AddFavoriteBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.post(`${URL}/favs`, objectId);
+    dispatch({
+      type: NEW_FAVORITE,
+      payload: response.data,
+    });
+  };
+}
+
+export function removeFavoriteBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.put(`${URL}/favs`, objectId);
+    dispatch({
+      type: REMOVE_FAV_BACK,
+      payload: response.data,
+    });
+  };
+}
+
+export function getAllCarts(id) {
+  return async function (dispatch) {
+    const response = await axios.get(`${URL}/cart/${id}`);
+    dispatch({
+      type: GET_ALL_CARTS,
+      payload: response.data,
+    });
+  };
+}
+
+export function AddCartBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.post(`${URL}/cart`, objectId);
+    dispatch({
+      type: NEW_CART,
+      payload: response.data,
+    });
+  };
+}
+
+export function removeCartBack(objectId) {
+  return async function (dispatch) {
+    const response = await axios.put(`${URL}/cart`, objectId);
+    dispatch({
+      type: REMOVE_CART_BACK,
+      payload: response.data,
+    });
+  };
+}
 
 export const showLoader = () => {
   return {
@@ -33,14 +101,11 @@ export const showLoader = () => {
   };
 };
 
-
 export const hideLoader = () => {
   return {
     type: HIDE_LOADER,
   };
 };
-
-
 
 export const getFiltersAndPagination = (filtros, pageNumber) => {
   return async (dispatch) => {
@@ -153,14 +218,26 @@ export const sortProducts = (orderBy) => {
   };
 };
 
-export const userRegister = (formData) => async () => {
+export const userRegister = (formData) => async (dispatch) => {
   try {
-    const response = await axios.post("/usuarios", formData);
-    console.log(response.data);
+    const response = await axios.post(`${URL}/users`, formData);
+    dispatch({
+      type: USER_LOGEADO,
+      payload: response.data,
+    });
   } catch (error) {
     console.error(error);
   }
 };
+
+export function clearUser() {
+  return async function (dispatch) {
+    dispatch({
+      type: CLEAR_USER
+    });
+  };
+}
+
 export const getCarrito = (userId) => {
   return async (dispatch) => {
     try {
@@ -225,141 +302,72 @@ export const eliminarDelCarrito = (userId, productId) => async (dispatch) => {
   }
 };
 
-
-
-
-/* --------------------------------------------
-  file: redux -actions
- 
-  description:  Auth0 Management
------------------------------------------------*/
-
-
-
-export const getApiJWT = (token) => {
-  return new Promise((resolve, reject) => {
-    try {
-      let options = {
-        method: "GET",
-        url: "/auth",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-
-      axios.request(options).then((res) => {
-        resolve(res.data);
-      });
-    } catch (err) {
-      console.log(">> ERROR");
-      reject(err);
-    }
-  });
+export const getFavorites = (id) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/favoritos/${id}`);
+    dispatch({
+      type: GET_FAVORITES,
+      payload: data.data,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const getUsers = (apiToken) => {
-  return new Promise((resolve, reject) => {
-    let options = {
-      method: "GET",
-      url: `/users`,
-      headers: {
-        authorization: `Bearer ${apiToken}`,
-      },
-    };
-
-    axios
-      .request(options)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+export const deleteFavorite = (datos) => async () => {
+  try {
+    const { data } = await axios.post("/favoritos/delete", datos);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const getUser = (userId, apiToken) => {
-  return new Promise((resolve, reject) => {
-    let options = {
-      method: "GET",
-      url: `/users/${userId}`,
-      headers: {
-        authorization: `Bearer ${apiToken}`,
-      },
-    };
 
-    axios
-      .request(options)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
-
-/* --------------------------------------------
-  file: redux -actions
- 
-  description:  Favorites
------------------------------------------------*/
-export function getAllFavs(id) {
-  console.log('me despacharon');
-
-  return async function (dispatch) {
-    const response = await axios.get(`${URL}/favs/${id}`);
-    dispatch({
-      type: GET_ALL_FAVS,
-      payload: response.data,
-    });
-  };
-}
-
-
-export function AddFavoriteBack(objectId) {
-  return async function (dispatch) {
-    const response = await axios.post(`${URL}/favs`, objectId);
-    dispatch({
-      type: NEW_FAVORITE,
-      payload: response.data,
-    });
-  };
-}
-
-export function removeFav(id) {
-  return {
-    type: REMOVE_FAVORITES,
-    payload: id,
-  };
-}
-
-
-
-export function removeFavoriteBack(objectId) {
-  return async function (dispatch) {
-    const response = await axios.put(`${URL}/favs`, objectId);
-    dispatch({
-      type: REMOVE_FAV_BACK,
-      payload: response.data,
-    });
-  };
-}
-
-
-
-
-export function getAddFavorites(product) {
+export const getUserProducts = () => {
   return async (dispatch) => {
     try {
-      // const { data } = await axios.get(`${URL}/favorites`);
-      return dispatch({
-        type: ADD_FAVORITES,
-        payload: product,
-      });
+      const { data } = await axios.get(`/products/all`);
+      dispatch({ type: GET_USER_PRODUCTS, payload: data });
+  } catch (error) {
+     console.error(error);
+  }
+}
+}
+
+
+export const createShoe = (shoe) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post("/products", shoe);
+      return dispatch({ type: CREATE_SHOES, payload: data });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-}
+};
+
+export const updateShoe = (shoe) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`/products/change`, shoe);
+      return dispatch({ type: CHANGE_SHOE, payload: data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+
+export const deleteShoe = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`/products/${id}`);
+      dispatch({ type: DELETE_SHOE, payload: data });
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: DELETE_SHOE, payload: error.message }); // Ejemplo: acción de error
+    }
+  };
+};
+      
 

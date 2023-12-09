@@ -9,16 +9,19 @@ import {
   ADD_TO_CART,
   UPDATE_CART,
   REMOVE_FROM_CART,
-  SORT_PRICE,
-  RESET,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
+  GET_FAVORITES,
+  GET_USER_PRODUCTS,
+  CREATE_SHOES,
+  USER_LOGEADO,
+  CLEAR_USER,
+  CHANGE_SHOE,
+  DELETE_SHOE,
+  GET_ALL_CARTS,
   GET_ALL_FAVS,
+  NEW_CART,
   NEW_FAVORITE,
-  REMOVE_FAV_BACK,
-
-
-  FAVORITES,
+  REMOVE_CART_BACK,
+  REMOVE_FAV_BACK
 } from "./action-type";
 
 const initialState = {
@@ -30,8 +33,8 @@ const initialState = {
   user: {},
   carrito: [],
   favorites: [],
-  FavoritesPersist: [],
-  allFavoritesBack: [],
+  userProducts:[],
+  deleteProducts:[]
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -47,24 +50,72 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         indexProductShow: action.payload,
       };
+    
+    case GET_ALL_FAVS:
+      return{
+        ...state,
+        favorites: action.payload
+      }
+    
+    case NEW_FAVORITE:
+        return{
+          ...state,
+          favorites: action.payload
+        }
 
-    case GET_BY_ID:
+    case REMOVE_FAV_BACK:
+      return{
+        ...state,
+        allFavoritesBack: action.payload
+      }
+
+    case GET_ALL_CARTS:
+      return{
+        ...state,
+        carrito: action.payload
+      }
+
+    case NEW_CART:
+      return{
+        ...state,
+        carrito: action.payload
+      }
+
+    case REMOVE_CART_BACK:
+      return{
+        ...state,
+        carrito: action.payload
+      }
+
+    case USER_LOGEADO: 
+    return {
+      ...state,
+      user: action.payload
+    };
+
+    case CLEAR_USER:
       return {
         ...state,
-        productDetail: action.payload,
+        user: {}
       };
+    
+    case GET_BY_ID: 
+    return {
+      ...state,
+      productDetail: action.payload
+    };
 
     case CLEAR_DETAIL:
       return {
         ...state,
-        productDetail: [],
-      };
+        productDetail: []
+      }
 
     case GET_PRODUCTS_BY_NAME:
       return {
         ...state,
-        productShow: action.payload,
-      };
+        productShow: action.payload
+      }
     case GET_ALL_CATEGORIES:
       return {
         ...state,
@@ -96,50 +147,36 @@ const rootReducer = (state = initialState, action) => {
         carrito: action.payload.data,
         productId: action.payload.id_producto,
       };
-    case GET_ALL_FAVS:
+
+    case GET_FAVORITES:
       return {
         ...state,
-        allFavoritesBack: action.payload,
+        favorites: action.payload,
       };
 
-    case NEW_FAVORITE:
-      return {
+    case GET_USER_PRODUCTS:
+      return{
         ...state,
-        allFavoritesBack: action.payload,
-      };
-
-    case REMOVE_FAV_BACK:
-      return {
+        userProducts: action.payload
+      }
+    case CREATE_SHOES:
+      return{
         ...state,
-        allFavoritesBack: action.payload,
-      };
-
-    case ADD_FAVORITES:
-      return {
+        userProducts:[...state.userProducts,action.payload]
+      }
+    case CHANGE_SHOE:
+      return{
         ...state,
-        FavoritesPersist: [...state.FavoritesPersist, action.payload],
-      };
-
-    case REMOVE_FAVORITES:
-      // eslint-disable-next-line no-case-declarations
-      let productRemove = state.FavoritesPersist.filter(
-        (product) => product.id !== action.payload
-      );
-      return {
+        userProducts:action.payload
+      }
+    case DELETE_SHOE:
+      return{
         ...state,
-        FavoritesPersist: productRemove,
-      };
+        deleteProducts: action.payload
+      }        
     default:
-      return { ...state };
-
-      case FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-      
+      return {...state};
   }
-  
 };
 
 export default rootReducer;

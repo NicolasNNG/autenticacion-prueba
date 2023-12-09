@@ -140,8 +140,10 @@ const Detail = () => {
                       Iniciar Sesión
                     </Button>,
                   ]}
+                  style={{ fontSize: "16px", width: "90%" }}
+                 
                 >
-                  <p>Para comprar, ingresa a tu cuenta.</p>
+                  <p style={{ fontSize: "23px" }}>Para comprar, ingresa a tu cuenta.</p>
                 </Modal>
               </div>
             )}
