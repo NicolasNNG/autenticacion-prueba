@@ -8,6 +8,9 @@ import Logout from "@/app/api/auth/logoutButton";
 import styles from "./login.module.css";
 import { userRegister } from "@/redux/actions";
 import Image from "next/image";
+import { Menu, Dropdown } from "antd";
+import Link from "next/link";
+import authProfile from "@/app/api/auth/authProfile"
 
 const LoginAuth = () => {
   const { user, isLoading } = useUser();
@@ -42,6 +45,17 @@ const LoginAuth = () => {
     }
   }, [user, isLoading]);
 
+  const menu = (
+    <Menu>
+      <Menu.Item key="favorites">Favoritos</Menu.Item>
+      <Menu.Item key="purchases">Compras</Menu.Item>
+      <Menu.Item key="profile">
+        <Link href="/profile">
+          <p>Mi perfil</p>
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <div>
       <div className={styles.profileContainer}>
@@ -59,15 +73,17 @@ const LoginAuth = () => {
                 <Login className={styles.loginButton} />
               )}
             </div>
-            {user.picture && (
-              <Image
-                src={user.picture}
-                width={60}
-                height={60}
-                alt={user.name}
-                className={styles.profileImage}
-              />
-            )}
+            <div className={styles.rightContent}>
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <Image
+                  src={user.picture}
+                  width={60}
+                  height={60}
+                  alt={user.name}
+                  className={styles.profileImage}
+                />
+              </Dropdown>
+            </div>
           </div>
         ) : (
           <div>
@@ -85,6 +101,7 @@ const LoginAuth = () => {
           </a>
         </div>
       )}
+      
     </div>
   );
 };
