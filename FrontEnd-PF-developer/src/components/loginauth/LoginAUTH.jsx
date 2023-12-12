@@ -50,7 +50,7 @@ const LoginAuth = () => {
       {/* <Menu.Item key="favorites">Favoritos</Menu.Item> */}
       <Menu.Item key="profile">
         <Link href={"/favorites"}>
-          <p>Favoritos</p>
+          <p> ❤️FAVORITOS</p>
         </Link>
       </Menu.Item>
       <Menu.Item key="purchases">Compras</Menu.Item>
