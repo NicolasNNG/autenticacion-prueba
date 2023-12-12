@@ -47,7 +47,12 @@ const LoginAuth = () => {
 
   const menu = (
     <Menu>
-      <Menu.Item key="favorites">Favoritos</Menu.Item>
+      {/* <Menu.Item key="favorites">Favoritos</Menu.Item> */}
+      <Menu.Item key="profile">
+        <Link href={"/favorites"}>
+          <p>Favoritos</p>
+        </Link>
+      </Menu.Item>
       <Menu.Item key="purchases">Compras</Menu.Item>
       <Menu.Item key="profile">
         <Link href="/profile">
